@@ -11,13 +11,13 @@ It also serves as a user authentication point through KEYCLOAK & resource server
 ### evoice-naming-service
 
 The Spring DISCOVERY SERVER service as an observer for the list of declared services.
-It also works with the Spring Cloud Load Balancer.
+It also works with the RabbitMQ Load Balancer.
 
 ### evoice-user-service
 
 The Spring User Service as a source service for data about system users,
 as well as an end point for maintaining information.
-To communicate with other services (meaning resource services), an Open Feign client is used.
+To communicate with other services (meaning resource services), an AMQP client is used.
 
 ### platform
 
@@ -27,17 +27,4 @@ and sets of dependencies for the operation of other services (Maven pom inherita
 ### other application commons
 
 Stack of commons:
-Spring (Boot, Cloud, Security, Envers, JPA, Data, Validation, Web, e.t.c.),
-Micrometer,
-Maven,
-Mapstruct,
-Lombok,
-Liquibase,
-PostgreSQL,
-Open Feign,
-Zipkin,
-Prometheus,
-Grafana,
-Swagger.
-
-![plot](https://github.com/belochka98/echo-voice-solution/blob/main/sources/maven%20architecture.png)
+...
