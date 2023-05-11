@@ -9,9 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import userService.entity.User;
-import userService.repository.UserRepository;
 import userService.utils.EasyRandomParametersCustom;
+import userservice.entity.User;
+import userservice.repository.UserRepository;
+import userservice.service.impl.UserServiceImpl;
 
 import java.util.Optional;
 import java.util.UUID;

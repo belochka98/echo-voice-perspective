@@ -14,13 +14,4 @@
     <version>1.0.0</version>
     <name>evoice-user-service</name>
     <description>Service provider of user data and the main processing link</description>
-
-    <dependencies>
-        <!-- EVOICE -->
-        <dependency>
-            <groupId>evoice</groupId>
-            <artifactId>evoice-user-api</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
 </project>

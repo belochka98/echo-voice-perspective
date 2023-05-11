@@ -1,0 +1,26 @@
+# IMPORT PROPERTIES
+spring.config.import:
+  # IMPORT DEFAULT PROPERTIES
+  - parties/default.yml
+  # IMPORT JPA PROPERTIES
+  - parties/jpa.yml
+
+# SPRING PROPERTIES
+spring:
+  application.name: evoice-user-service
+  # DATASOURCE PROPERTIES
+  datasource:
+    url: ${US_DB_URL:jdbc:postgresql://localhost:5432/user_db}
+    username: ${US_DB_USERNAME:evoice_user_db}
+    password: ${US_DB_PASSWORD:evoice_user_db}
+
+# OPEN API PROPERTIES
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+
+# THIS SERVICE OTHER PROPERTIES
+server.port: ${EVOICE_USER_SERVICE_PORT:8093}

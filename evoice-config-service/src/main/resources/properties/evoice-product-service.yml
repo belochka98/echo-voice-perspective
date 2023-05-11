@@ -1,0 +1,19 @@
+# IMPORT PROPERTIES
+spring.config.import:
+  # IMPORT DEFAULT PROPERTIES
+  - parties/default.yml
+  # IMPORT JPA PROPERTIES
+  - parties/jpa.yml
+
+# SPRING PROPERTIES
+spring:
+  # APPLICATION PROPERTIES
+  application.name: evoice-product-service
+  # DATASOURCE PROPERTIES
+  datasource:
+    url: ${US_DB_URL:jdbc:postgresql://localhost:5432/product_db}
+    username: ${US_DB_USERNAME:evoice_product_db}
+    password: ${US_DB_PASSWORD:evoice_product_db}
+
+# THIS SERVICE OTHER PROPERTIES
+server.port: ${EVOICE_PRODUCT_SERVICE_PORT:8094}

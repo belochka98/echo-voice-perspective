@@ -1,24 +1,25 @@
 package userService.repository;
 
-import lombok.Getter;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import templates.DataJPATestTemplate;
-import userService.entity.User;
+import org.springframework.test.context.ActiveProfiles;
 import userService.utils.EasyRandomParametersCustom;
+import userservice.entity.User;
+import userservice.repository.UserRepository;
 
+@ActiveProfiles("test")
+@DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserRepositoryTest extends DataJPATestTemplate<User> {
+class UserRepositoryTest {
     @Autowired
-    @Getter
     private UserRepository repository;
 
-    @Getter
     private final EasyRandom easyRandom = new EasyRandom(new EasyRandomParametersCustom());
 
     @Test

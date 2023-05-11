@@ -1,0 +1,14 @@
+# IMPORT DEFAULTS
+spring.config.import:
+  # IMPORT RABBITMQ PROPERTIES
+  - rabbitmq.yml
+  # IMPORT EUREKA PROPERTIES
+  - eureka.yml
+  # IMPORT MANAGEMENT PROPERTIES
+  - management.yml
+  # IMPORT MANAGEMENT PROPERTIES
+  - open-api.yml
+
+# LOGGING PROPERTIES
+logging.level:
+  root: debug

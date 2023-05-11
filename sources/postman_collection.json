@@ -1,0 +1,646 @@
+{
+  "info": {
+    "_postman_id": "37b82427-8a81-482e-833a-c3fc537b173c",
+    "name": "EchoVoice",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18927679"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "/users/all",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{default_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8091/services/user-service/api/users/all",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8091",
+              "path": [
+                "services",
+                "user-service",
+                "api",
+                "users",
+                "all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8091/services/user-service/api/users/products/c0707de0-7db0-4d14-855c-a7bd0a59b2af",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8091",
+              "path": [
+                "services",
+                "user-service",
+                "api",
+                "users",
+                "products",
+                "c0707de0-7db0-4d14-855c-a7bd0a59b2af"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "keycloack",
+      "item": [
+        {
+          "name": "/token (docker)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.environment.set('docker_token', pm.response.json().access_token)\r",
+                  "pm.environment.set('default_token', pm.response.json().access_token)\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "clientSecret",
+                  "value": "CCZYVralRNEJvVINdtoutNSYsmfxkv8v",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "evoice-client",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "http://keycloack:8080/auth/realms/evoice-realm-docker/protocol/openid-connect/auth/device",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "headerPrefix",
+                  "value": "Bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "evoice-user",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "evoice-user",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "offline_access",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "client_id",
+                  "value": "evoice-client",
+                  "type": "text"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "CCZYVralRNEJvVINdtoutNSYsmfxkv8v",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8080/auth/realms/evoice-realm-docker/protocol/openid-connect/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "auth",
+                "realms",
+                "evoice-realm-docker",
+                "protocol",
+                "openid-connect",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/token (service)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.environment.set('service_token', pm.response.json().access_token)\r",
+                  "pm.environment.set('default_token', pm.response.json().access_token)\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "clientSecret",
+                  "value": "CCZYVralRNEJvVINdtoutNSYsmfxkv8v",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "http://localhost:8080/auth/realms/evoice-realm-service/protocol/openid-connect/auth/device",
+                  "type": "string"
+                },
+                {
+                  "key": "clientId",
+                  "value": "evoice-client",
+                  "type": "string"
+                },
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "headerPrefix",
+                  "value": "Bearer",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "evoice-user",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "evoice-user",
+                  "type": "string"
+                },
+                {
+                  "key": "client_authentication",
+                  "value": "header",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenType",
+                  "value": "",
+                  "type": "string"
+                },
+                {
+                  "key": "scope",
+                  "value": "offline_access",
+                  "type": "string"
+                },
+                {
+                  "key": "tokenName",
+                  "value": "token",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "client_id",
+                  "value": "evoice-client",
+                  "type": "text"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "CCZYVralRNEJvVINdtoutNSYsmfxkv8v",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8080/auth/realms/evoice-realm-service/protocol/openid-connect/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "auth",
+                "realms",
+                "evoice-realm-service",
+                "protocol",
+                "openid-connect",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/realm",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtQmFpQkZKTVlVT0hVYjZNWlRtdlJPMDV3cXQ5Z3JXeWVBbkxTNTlwSUhVIn0.eyJleHAiOjE2Nzg2NTk3NTgsImlhdCI6MTY3ODY1OTQ1OCwianRpIjoiNjc0YjBhMzItMGQ4Yi00NzY0LThkMzgtNTlmMGMxNzdhYmUxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL2V2b2ljZS1yZWFsbSIsInN1YiI6Ijk2MmU2MzZhLTViMzItNGVmOC05ZWU4LWFhOTQ0YzQxODdhZSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImV2b2ljZS1iYXNpYy1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiYzFkYTNkYjktZWE0Yi00MDc1LWE1ODYtN2VhMGVhMTlkN2FjIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLWV2b2ljZS1yZWFsbSIsInVtYV9hdXRob3JpemF0aW9uIl19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJjMWRhM2RiOS1lYTRiLTQwNzUtYTU4Ni03ZWEwZWExOWQ3YWMiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiZXZvaWNlLXVzZXIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIifQ.HIT3Z9Dq-eam0e7RVE5aLm1vYyJPYnuJgBmPRJ5w93ahxBkr3cT5j52ZNTIdcJJSI6UOT-MZA1LmSbisq_92qeL1m_B87cY2zv044jGYMLlYNvAi7eO_z43xx3aPrespYCidkUOtQRtuRB6k8dq5Juf4DGfHhUi0uOp8dpiuRrkeTMaYpFSY2MtJKA86flBTLlSPezglWSNk7puZR9Yr4PDP_HhWisjlXtDWD6KpURE6_BimSrtdPzwbf7PiuWMI_XmfoxKI_tP7HjE6Nrvg6ZSoymLvSPlvkVPdjxuT1t12MVEb97e154Dtg9Ydmlgjx5swWFrc1b8zvH9DBn3UmQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/auth/realms/evoice-realm-service",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "auth",
+                "realms",
+                "evoice-realm-service"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "eureka",
+      "item": [
+        {
+          "name": "/eureka/web",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJWTzFFZHduUExVMVQyRklGY2h3Y3IxY3RxSXBqeXpRWFpIdV9qUWdmQjA4In0.eyJleHAiOjE2NzkzOTQ1MDYsImlhdCI6MTY3OTM5NDIwNiwianRpIjoiZjA0ZGQ2ZGItZDA1Ny00ZDYyLThjZWEtZGRmOWI3YzMyYjFiIiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjgwODAvYXV0aC9yZWFsbXMvZXZvaWNlLXJlYWxtIiwic3ViIjoiYTVjMjM2OTAtZTY5Yy00Y2E5LWI0Y2QtMmIxM2MyZTU1ZjEwIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZXZvaWNlLWJhc2ljLWNsaWVudC1zZXJ2aWNlIiwic2Vzc2lvbl9zdGF0ZSI6IjNiMjRlNjYyLTBiZGItNGRhNS1iNjk4LWM5NTIxNjRiNWNlOSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1ldm9pY2UtcmVhbG0iLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiM2IyNGU2NjItMGJkYi00ZGE1LWI2OTgtYzk1MjE2NGI1Y2U5IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInByZWZlcnJlZF91c2VybmFtZSI6ImV2b2ljZS11c2VyIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIn0.rHj3E28CkQ5kY7ibVLegeTIiv0iyVRjtz1gNA-vKejTTFggCUrlryVJHg8hCICiqUcwJhSJwYtiRnnrov1FKUuYmWV9VT268MBvRKycU0qraYZhD8P1HrGd27dW-0YVrY5-npu05FbUI2tN1CLqZv_BZtPciPWAPntjbbm3lnyq9MvATsE6-2ppskGkjQquPCtHtSZuLDFDk5TOg1lmUShSc8Vszm-fJojBb6rSU1WJ2rsqRnPEM7NfH7gsnC2oQD3JU7BM_110BzDxAiHMKJIkJgYngLxCtUT9AmgJTkGToftv1Ma6rsNduM3V57ZhxcXc1BjBYk3szY-Na-NbZBg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8091/eureka/web",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8091",
+              "path": [
+                "eureka",
+                "web"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "actuator",
+      "item": [
+        {
+          "name": "/gateway/routes",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8091/actuator/gateway/routes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8091",
+              "path": [
+                "actuator",
+                "gateway",
+                "routes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/user-service/actuator/",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8091/actuator",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8091",
+              "path": [
+                "actuator"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:8093/actuator/prometheus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8093/actuator/prometheus",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8093",
+              "path": [
+                "actuator",
+                "prometheus"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "open-api",
+      "item": [
+        {
+          "name": "/swagger-ui/index.html",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8091/webjars/swagger-ui/index.html",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8091",
+              "path": [
+                "webjars",
+                "swagger-ui",
+                "index.html"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/api-docs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8091/api-docs",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8091",
+              "path": [
+                "api-docs"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "rabbitMQ",
+      "item": [
+        {
+          "name": "/api/nodes",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:15672/api/nodes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "15672",
+              "path": [
+                "api",
+                "nodes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/api/connections/",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "admin",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:15672/api/connections/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "15672",
+              "path": [
+                "api",
+                "connections",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "config-server",
+      "item": [
+        {
+          "name": "http://localhost:8067/evoice-product-service/default",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8067/evoice-api-gateway.yml",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8067",
+              "path": [
+                "evoice-api-gateway.yml"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

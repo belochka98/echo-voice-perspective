@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>evoice</groupId>
-    <artifactId>evoice-solution</artifactId>
+    <artifactId>echo-voice-perspective</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
@@ -13,9 +13,11 @@
         <!-- CORE & PARENT DEPENDENCIES -->
         <module>platform</module>
 
-        <!-- PARENT DEPENDENCIES -->
+        <!-- MODULES -->
+        <module>evoice-config-service</module>
         <module>evoice-naming-service</module>
         <module>evoice-api-gateway</module>
         <module>evoice-user-service</module>
+        <module>evoice-product-service</module>
     </modules>
 </project>

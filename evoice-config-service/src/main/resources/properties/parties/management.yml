@@ -1,0 +1,11 @@
+# METRICS PROPERTIES
+management:
+  # ACTUATOR / PROMETHEUS PROPERTIES
+  endpoints:
+    web.exposure.include: health, info, prometheus
+  # MICROMETER TRACING PROPERTIES
+  tracing.sampling.probability: 1.0
+  metrics.tags:
+    application: ${spring.application.name}
+  # ZIPKIN PROPERTIES
+  zipkin.tracing.endpoint: ${ZIPKIN_URL:http://localhost:9411/api/v2/spans}

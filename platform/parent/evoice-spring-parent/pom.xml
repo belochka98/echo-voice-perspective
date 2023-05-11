@@ -34,6 +34,7 @@
         <spring.data.commons.version>3.0.4</spring.data.commons.version>
         <spring.hibernate.envers.version>6.1.7.Final</spring.hibernate.envers.version>
         <spring.openapi.version>2.0.4</spring.openapi.version>
+        <spring.amqp.test.version>3.0.3</spring.amqp.test.version>
 
         <database.postgres.version>42.6.0</database.postgres.version>
         <database.hsqldb.version>2.7.1</database.hsqldb.version>
@@ -50,6 +51,19 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>

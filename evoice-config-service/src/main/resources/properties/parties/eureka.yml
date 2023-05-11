@@ -1,0 +1,5 @@
+# EUREKA PROPERTIES
+eureka:
+  client.serviceUrl:
+    defaultZone: ${EUREKA_URL:http://localhost:8090/eureka}
+  instance.preferIpAddress: true

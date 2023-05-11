@@ -1,0 +1,4 @@
+# SPRING PROPERTIES
+spring:
+  # SPRING CONFIG SERVER PROPERTIES
+  cloud.config.failFast: false

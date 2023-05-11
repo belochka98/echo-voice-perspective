@@ -1,0 +1,9 @@
+# SPRING PROPERTIES
+spring:
+  # APPLICATION PROPERTIES
+  application.name: evoice-product-service
+  # SPRING CONFIG SERVER PROPERTIES
+  cloud:
+    config:
+      failFast: true
+      uri: ${EVOICE_CONFIG_SERVICE_URL:http://localhost:8067}

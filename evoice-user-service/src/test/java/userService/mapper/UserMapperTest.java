@@ -1,13 +1,14 @@
 package userService.mapper;
 
-import dto.UserDto;
+import apicore.rest.user.UserDto;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import userService.entity.User;
 import userService.utils.EasyRandomParametersCustom;
+import userservice.entity.User;
+import userservice.mapper.UserMapper;
 
 import java.util.stream.Collectors;
 

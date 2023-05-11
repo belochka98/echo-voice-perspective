@@ -1,0 +1,67 @@
+# IMPORT PROPERTIES
+spring.config.import:
+  # IMPORT EUREKA PROPERTIES
+  - parties/eureka.yml
+  # IMPORT MANAGEMENT PROPERTIES
+  - parties/management.yml
+  # IMPORT MANAGEMENT PROPERTIES
+  - parties/open-api.yml
+
+# SPRING PROPERTIES
+spring:
+  application.name: evoice-api-gateway
+  # MVC PROPERTIES
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  # SECURITY KEYCLOAK PROPERTIES
+  security.oauth2.resourceserver.jwt.issuer-uri: ${KEYCLOAK_URL:http://localhost:8080/auth/realms/evoice-realm-service}
+  # SPRING CLOUD PROPERTIES
+  cloud:
+    gateway:
+      routes:
+        ## OPEN API Route
+        - id: open-api
+          uri: ${SERVICE_URL:http://localhost:${server.port}}
+          predicates:
+            - Path=/api-docs/**
+          filters:
+            - RewritePath=/api-docs/evoice-(?<path>.*), /services/$\{path}/api-docs
+        ## User Service Route
+        - id: evoice-user-service
+          uri: lb://evoice-user-service
+          predicates:
+            - Path=/services/user-service/**
+          filters:
+            ### Note: order matters!
+            - RewritePath=/services/user-service/api/(?<segment>.*), /v1/api/$\{segment}
+            - RewritePath=/services/user-service/(?<segment>.*), /$\{segment}
+
+# OPEN API PROPERTIES
+springdoc:
+  group-configs:
+    - group: evoice-user-service/
+      pathsToMatch:
+        - /services/user-service/**
+
+# EUREKA PROPERTIES
+eureka:
+  client:
+    register-with-eureka: false
+
+# LOGGING PROPERTIES
+logging:
+  level:
+    org.springframework.cloud:
+      gateway: debug
+      gateway.route.RouteDefinitionRouteLocator: debug
+
+# METRICS PROPERTIES
+management:
+  # ACTUATOR / PROMETHEUS PROPERTIES
+  endpoints:
+    web.exposure.include: health, info, prometheus, gateway
+  endpoint.gateway.enabled: true
+
+# THIS SERVICE OTHER PROPERTIES
+server.port: ${EVOICE_API_GATEWAY_PORT:8091}

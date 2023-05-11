@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="insert-into-product-type" author="${author}" dbms="postgresql">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <tableExists tableName="product_type"/>
+        </preConditions>
+
+        <insert tableName="product_type">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="name" value="DEFAULT_TYPE"/>
+            <column name="description" value="DEFAULT_DESCRIPTION"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="name" value="DEFAULT_TYPE"/>
+            <column name="description" value="DEFAULT_DESCRIPTION"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="name" value="TEST_TYPE"/>
+            <column name="description" value="TEST_DESCRIPTION"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="name" value="TEST_TYPE"/>
+            <column name="description" value="TEST_DESCRIPTION"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-into-product" author="${author}" dbms="postgresql">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <tableExists tableName="product"/>
+        </preConditions>
+
+        <insert tableName="product">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="type_id"
+                    valueComputed="(select id from product_type where name = 'DEFAULT_TYPE' and end_date is not null)"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="type_id"
+                    valueComputed="(select id from product_type where name = 'DEFAULT_TYPE' and end_date is null)"/>
+        </insert>
+        <insert tableName="product">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="type_id"
+                    valueComputed="(select id from product_type where name = 'TEST_TYPE' and end_date is not null)"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="type_id"
+                    valueComputed="(select id from product_type where name = 'TEST_TYPE' and end_date is null)"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-into-product_name" author="${author}" dbms="postgresql">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <tableExists tableName="product_name"/>
+        </preConditions>
+
+        <insert tableName="product_name">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1)"/>
+            <column name="name" value="DEFAULT_NAME"/>
+            <column name="description" value="DEFAULT_DESCRIPTION"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product_name">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1 offset 1)"/>
+            <column name="name" value="DEFAULT_NAME"/>
+            <column name="description" value="DEFAULT_DESCRIPTION"/>
+        </insert>
+        <insert tableName="product_name">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1 offset 2)"/>
+            <column name="name" value="TEST_NAME"/>
+            <column name="description" value="TEST_DESCRIPTION"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product_name">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1 offset 3)"/>
+            <column name="name" value="TEST_NAME"/>
+            <column name="description" value="TEST_DESCRIPTION"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-into-product_price" author="${author}" dbms="postgresql">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <tableExists tableName="product_price"/>
+        </preConditions>
+
+        <insert tableName="product_price">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1)"/>
+            <column name="price" value="12.2"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product_price">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1 offset 1)"/>
+            <column name="price" value="12.2"/>
+        </insert>
+        <insert tableName="product_price">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1 offset 2)"/>
+            <column name="price" value="13.2"/>
+            <column name="end_date" valueComputed="${current_timestamp}"/>
+        </insert>
+        <insert tableName="product_price">
+            <column name="id" valueComputed="${uuid_function}"/>
+            <column name="product_id"
+                    valueComputed="(select id from product order by type_id, end_date nulls first limit 1 offset 3)"/>
+            <column name="price" value="13.2"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

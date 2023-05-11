@@ -4,75 +4,138 @@ volumes:
   postgres_data: { }
   prometheus_data: { }
   grafana_data: { }
+  rabbitmq_data: { }
 
 services:
-####  # APPLICATION SERVICES
-  ####  ##  DISCOVERY SERVICE
-  ####  evoice-naming-service:
-  ####    depends_on:
-  ####      - keycloak
-  ####      - zipkin
-  ####      - prometheus
-  ####    image: evoice/evoice-naming-service:1.0.0
-  ####    container_name: evoice-naming-service-compose
-  ####    environment:
-  ####      ### Discovery service settings - EUREKA
-  ####      EUREKA_URL: ${EUREKA_URL:-http://evoice-naming-service:8090/eureka}
-  ####      ### Other application service
-  ####      EVOICE_NAMING_SERVICE_PORT: ${EVOICE_NAMING_SERVICE_PORT:-8090}
-  ####    ports:
-  ####      - ${EXTERNAL_EVOICE_NAMING_SERVICE_PORT:-8090}:${EVOICE_NAMING_SERVICE_PORT:-8090}
-  ####
-  ####  ##  API GATEWAY SERVICE
-  ####  evoice-api-gateway:
-  ####    depends_on:
-  ####      - keycloak
-  ####      - zipkin
-  ####      - prometheus
-  ####      - postgres
-  ####      - evoice-naming-service
-  ####    image: evoice/evoice-api-gateway:1.0.0
-  ####    container_name: evoice-api-gateway-service-compose
-  ####    environment:
-  ####      ### Authorization service settings - KEYCLOAK (should be same as ISS in token & 'Fronted URL' of realm)
-  ####      KEYCLOAK_URL: ${KEYCLOAK_URL:-http://keycloak:8080/auth/realms/evoice-realm-docker}
-  ####      ### Discovery service settings - EUREKA
-  ####      EUREKA_URL: ${EUREKA_URL:-http://evoice-naming-service:8090/eureka}
-  ####      ### Profiler http requests - ZIPKIN
-  ####      ZIPKIN_URL: ${ZIPKIN_URL:-http://zipkin:9411/api/v2/spans}
-  ####      ### Other application service
-  ####      EVOICE_API_GATEWAY_PORT: ${EVOICE_API_GATEWAY_PORT:-8091}
-  ####      SERVICE_URL: ${EVOICE_API_GATEWAY_URL:-http://evoice-api-gateway:8091}
-  ####    ports:
-  ####      - ${EXTERNAL_EVOICE_API_GATEWAY_PORT:-8091}:${EVOICE_API_GATEWAY_PORT:-8091}
-  ####    expose:
-  ####      - ${EXTERNAL_EVOICE_API_GATEWAY_PORT:-8091}
-  ####
-  ####  ##  USER SERVICE
-  ####  evoice-user-service:
-  ####    depends_on:
-  ####      - keycloak
-  ####      - zipkin
-  ####      - prometheus
-  ####      - postgres
-  ####      - evoice-naming-service
-  ####      - evoice-api-gateway
-  ####    image: evoice/evoice-user-service:1.0.0
-  ####    container_name: evoice-user-service-compose
-  ####    environment:
-  ####      ### Database service - POSTGRES
-  ####      US_DB_DRIVER: ${US_DB_DRIVER:-org.postgresql.Driver}
-  ####      US_DB_URL: ${US_DB_URL:-jdbc:postgresql://postgres:5432/user_db}
-  ####      US_DB_USERNAME: ${US_DB_USERNAME:-evoice_user_db}
-  ####      US_DB_PASSWORD: ${US_DB_PASSWORD:-evoice_user_db}
-  ####      US_DB_POOL: ${US_DB_POOL:-5}
-  ####      ### Discovery service settings - EUREKA
-  ####      EUREKA_URL: ${EUREKA_URL:-http://evoice-naming-service:8090/eureka}
-  ####      ### Profiler http requests - ZIPKIN
-  ####      ZIPKIN_URL: ${ZIPKIN_URL:-http://zipkin:9411/api/v2/spans}
-  ####      ### Other application service
-  ####      EVOICE_USER_SERVICE_PORT: ${EVOICE_USER_SERVICE_PORT:-8092}
+  # APPLICATION SERVICES
+  ##  CONFIG SERVICE
+  evoice-config-service:
+    depends_on:
+      - keycloak
+      - zipkin
+      - prometheus
+    image: evoice/evoice-config-service:1.0.0
+    container_name: evoice-config-service-compose
+    environment:
+      ### Other application service
+      EVOICE_NAMING_SERVICE_PORT: ${EVOICE_CONFIG_SERVICE_PORT:-8067}
+    ports:
+      - ${EXTERNAL_EVOICE_CONFIG_SERVICE_PORT:-8067}:${EVOICE_CONFIG_SERVICE_PORT:-8067}
 
+  ##  DISCOVERY SERVICE
+  evoice-naming-service:
+    depends_on:
+      - keycloak
+      - zipkin
+      - prometheus
+      - evoice-config-service
+    image: evoice/evoice-naming-service:1.0.0
+    container_name: evoice-naming-service-compose
+    environment:
+      ### Discovery service settings - EUREKA
+      EUREKA_URL: ${EUREKA_URL:-http://evoice-naming-service:8090/eureka}
+      ### Spring Cloud Config Server
+      EVOICE_CONFIG_SERVICE_URL: ${EVOICE_CONFIG_SERVICE_URL:-http://evoice-config-service:8067}
+      ### Other application service
+      EVOICE_NAMING_SERVICE_PORT: ${EVOICE_NAMING_SERVICE_PORT:-8090}
+    ports:
+      - ${EXTERNAL_EVOICE_NAMING_SERVICE_PORT:-8090}:${EVOICE_NAMING_SERVICE_PORT:-8090}
+
+  ##  API GATEWAY SERVICE
+  evoice-api-gateway:
+    depends_on:
+      - keycloak
+      - zipkin
+      - prometheus
+      - postgres
+      - evoice-naming-service
+      - evoice-config-service
+    image: evoice/evoice-api-gateway:1.0.0
+    container_name: evoice-api-gateway-service-compose
+    environment:
+      ### Authorization service settings - KEYCLOAK (should be same as ISS in token & 'Fronted URL' of realm)
+      KEYCLOAK_URL: ${KEYCLOAK_URL:-http://keycloak:8080/auth/realms/evoice-realm-docker}
+      ### Discovery service settings - EUREKA
+      EUREKA_URL: ${EUREKA_URL:-http://evoice-naming-service:8090/eureka}
+      ### Profiler http requests - ZIPKIN
+      ZIPKIN_URL: ${ZIPKIN_URL:-http://zipkin:9411/api/v2/spans}
+      ### Spring Cloud Config Server
+      EVOICE_CONFIG_SERVICE_URL: ${EVOICE_CONFIG_SERVICE_URL:-http://evoice-config-service:8067}
+      ### Other application service
+      EVOICE_API_GATEWAY_PORT: ${EVOICE_API_GATEWAY_PORT:-8091}
+      SERVICE_URL: ${EVOICE_API_GATEWAY_URL:-http://evoice-api-gateway:8091}
+    ports:
+      - ${EXTERNAL_EVOICE_API_GATEWAY_PORT:-8091}:${EVOICE_API_GATEWAY_PORT:-8091}
+    expose:
+      - ${EXTERNAL_EVOICE_API_GATEWAY_PORT:-8091}
+
+  ##  USER SERVICE
+  evoice-user-service:
+    depends_on:
+      - keycloak
+      - zipkin
+      - prometheus
+      - postgres
+      - evoice-naming-service
+      - evoice-api-gateway
+      - evoice-config-service
+    image: evoice/evoice-user-service:1.0.0
+    container_name: evoice-user-service-compose
+    environment:
+      ### Database service - POSTGRES
+      US_DB_DRIVER: ${US_DB_DRIVER:-org.postgresql.Driver}
+      US_DB_URL: ${US_DB_URL:-jdbc:postgresql://postgres:5432/user_db}
+      US_DB_USERNAME: ${US_DB_USERNAME:-evoice_user_db}
+      US_DB_PASSWORD: ${US_DB_PASSWORD:-evoice_user_db}
+      US_DB_POOL: ${US_DB_POOL:-5}
+      ### Discovery service settings - EUREKA
+      EUREKA_URL: ${EUREKA_URL:-http://evoice-naming-service:8090/eureka}
+      ### Profiler http requests - ZIPKIN
+      ZIPKIN_URL: ${ZIPKIN_URL:-http://zipkin:9411/api/v2/spans}
+      ### Spring Cloud Config Server
+      EVOICE_CONFIG_SERVICE_URL: ${EVOICE_CONFIG_SERVICE_URL:-http://evoice-config-service:8067}
+      ### RabbitMQ
+      RABBITMQ_URL: ${RABBITMQ_URL:-rabbitmq}
+      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-admin}
+      ### Other application service
+      EVOICE_USER_SERVICE_PORT: ${EVOICE_USER_SERVICE_PORT:-8093}
+
+  ##  PRODUCT SERVICE
+  evoice-product-service:
+    depends_on:
+      - keycloak
+      - zipkin
+      - prometheus
+      - postgres
+      - evoice-naming-service
+      - evoice-api-gateway
+      - evoice-config-service
+    image: evoice/evoice-product-service:1.0.0
+    container_name: evoice-product-service-compose
+    environment:
+      ### Database service - POSTGRES
+      US_DB_DRIVER: ${US_DB_DRIVER:-org.postgresql.Driver}
+      US_DB_URL: ${US_DB_URL:-jdbc:postgresql://postgres:5432/product_db}
+      US_DB_USERNAME: ${US_DB_USERNAME:-evoice_product_db}
+      US_DB_PASSWORD: ${US_DB_PASSWORD:-evoice_product_db}
+      US_DB_POOL: ${US_DB_POOL:-5}
+      ### Discovery service settings - EUREKA
+      EUREKA_URL: ${EUREKA_URL:-http://evoice-naming-service:8090/eureka}
+      ### Profiler http requests - ZIPKIN
+      ZIPKIN_URL: ${ZIPKIN_URL:-http://zipkin:9411/api/v2/spans}
+      ### Spring Cloud Config Server
+      EVOICE_CONFIG_SERVICE_URL: ${EVOICE_CONFIG_SERVICE_URL:-http://evoice-config-service:8067}
+      ### RabbitMQ
+      RABBITMQ_URL: ${RABBITMQ_URL:-rabbitmq}
+      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-admin}
+      ### Other application service
+      EVOICE_PRODUCT_SERVICE_PORT: ${EVOICE_PRODUCT_SERVICE_PORT:-8094}
+
+  # APPLICATION COMMONS
   ##  KEYCLOAK AUTHORIZATION SERVICE
   keycloak:
     depends_on:
@@ -97,7 +160,23 @@ services:
     ports:
       - ${EXTERNAL_KEYCLOAK_PORT:-8080}:8080
 
-  # APPLICATION COMMONS
+  ##  RABBITMQ
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq-compose
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+    environment:
+      ### Default account
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-admin}
+    ports:
+      - ${EXTERNAL_RABBITMQ_JMS_PORT:-5672}:5672
+      - ${EXTERNAL_RABBITMQ_MANAGEMENT_PORT:-15672}:15672
+    expose:
+      - ${EXTERNAL_RABBITMQ_JMS_PORT:-5672}:5672
+      - ${EXTERNAL_RABBITMQ_MANAGEMENT_PORT:-15672}:15672
+
   ##  POSTGRES DB
   postgres:
     image: postgres:15.2

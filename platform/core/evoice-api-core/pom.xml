@@ -20,6 +20,13 @@
     <dependencies>
         <!-- SPRING -->
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
             <version>${spring.data.commons.version}</version>
@@ -34,12 +41,36 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- EVOICE -->
+        <dependency>
+            <groupId>evoice</groupId>
+            <artifactId>evoice-amqp-core</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- TOOLS -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${tools.lombok.version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- TEST -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+            <version>${tools.easy-random.version}</version>
+            <scope>test</scope>
             <optional>true</optional>
         </dependency>
     </dependencies>

@@ -9,9 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.history.AnnotationRevisionMetadata;
 import org.springframework.data.history.Revision;
-import userService.entity.User;
-import userService.entity.envers.RevisionEntityCustom;
 import userService.utils.EasyRandomParametersCustom;
+import userservice.entity.User;
+import userservice.entity.envers.RevisionEntityCustom;
+import userservice.mapper.RevisionMapper;
 
 import java.util.stream.Collectors;
 

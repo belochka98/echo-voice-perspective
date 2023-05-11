@@ -5,8 +5,8 @@ import org.hibernate.envers.RevisionTimestamp;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.FieldPredicates;
 import org.springframework.data.history.AnnotationRevisionMetadata;
-import userService.entity.User;
-import userService.entity.envers.RevisionEntityCustom;
+import userservice.entity.User;
+import userservice.entity.envers.RevisionEntityCustom;
 
 public class EasyRandomParametersCustom extends org.jeasy.random.EasyRandomParameters {
     public EasyRandomParametersCustom() {

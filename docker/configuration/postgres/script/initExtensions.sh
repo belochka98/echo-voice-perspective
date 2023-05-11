@@ -11,4 +11,5 @@ EOSQL
 }
 
 create_user_with_db 'user_db' 'evoice_user_db'
+create_user_with_db 'product_db' 'evoice_product_db'
 create_user_with_db 'keycloak_db' 'evoice_keycloak_db'

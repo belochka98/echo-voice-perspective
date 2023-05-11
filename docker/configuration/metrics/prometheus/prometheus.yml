@@ -15,6 +15,6 @@ scrape_configs:
   - job_name: 'evoice-user-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'evoice-user-service:8092' ]
+      - targets: [ 'evoice-user-service:8093' ]
         labels:
           application: 'User Service Application'

@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="create-table-revinfo" author="${author}" dbms="oracle, postgresql, hsqldb">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <not>
+                <tableExists tableName="revision_info_envers"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="revision_info_envers" remarks="Ревизия аудита">
+            <column name="id" autoIncrement="true" type="bigserial" remarks="Идентификатор записи">
+                <constraints primaryKeyName="revision_info_envers_pkey" primaryKey="true" nullable="false"/>
+            </column>
+            <column name="revision_${timestamp_type}" type="bigint" remarks="Время создания ревизии">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="${varchar_type}(120)" remarks="Имя пользователя">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-revchanges" author="${author}" dbms="oracle, postgresql, hsqldb">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <not>
+                <tableExists tableName="revision_changes_envers"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="revision_changes_envers" remarks="Ревизия аудита">
+            <column name="id" type="${uuid_type}" remarks="Идентификатор записи">
+                <constraints primaryKeyName="revision_changes_envers_pkey" primaryKey="true" nullable="false"/>
+            </column>
+            <column name="revision_id" type="bigint" remarks="№ ревизии">
+                <constraints foreignKeyName="revision_changes_envers_fkey" references="revision_info_envers(id)"
+                             nullable="false"/>
+            </column>
+            <column name="entity_name" type="${varchar_type}(120)" remarks="Имя cущности в сервисе">
+                <constraints nullable="false"/>
+            </column>
+            <column name="table_name" type="${varchar_type}(120)" remarks="Имя таблицы">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revision_operation" type="smallint" remarks="Тип операции">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-product-audit" author="${author}" dbms="oracle, postgresql, hsqldb">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <not>
+                <tableExists tableName="product_audit"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="product_audit" remarks="История изменения перечня продуктов">
+            <column name="id" type="${uuid_type}" remarks="Идентификатор записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="${uuid_type}" remarks="Идентификатор типа продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="${timestamp_type}" remarks="Время окончания действия"/>
+            <column name="revision_id" type="bigint" remarks="№ ревизии">
+                <constraints foreignKeyName="product_audit_fkey" references="revision_info_envers(id)"
+                             nullable="false"/>
+            </column>
+            <column name="revision_operation" type="smallint" remarks="Тип операции">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-product-name-audit" author="${author}" dbms="oracle, postgresql, hsqldb">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <not>
+                <tableExists tableName="product_name_audit"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="product_name_audit" remarks="История изменения перечня наименований продуктов">
+            <column name="id" type="${uuid_type}" remarks="Идентификатор записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="bigint" remarks="Идентификатор продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="${varchar_type}(120)" remarks="Наименование продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="${varchar_type}(120)" remarks="Описание продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="${timestamp_type}" remarks="Время окончания действия"/>
+            <column name="revision_id" type="bigint" remarks="№ ревизии">
+                <constraints foreignKeyName="product_name_audit_fkey" references="revision_info_envers(id)"
+                             nullable="false"/>
+            </column>
+            <column name="revision_operation" type="smallint" remarks="Тип операции">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-product-price-audit" author="${author}" dbms="oracle, postgresql, hsqldb">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <not>
+                <tableExists tableName="product_price_audit"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="product_price_audit" remarks="История изменения перечня цен продуктов">
+            <column name="id" type="${uuid_type}" remarks="Идентификатор записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="${uuid_type}" remarks="Идентификатор продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="NUMBER(11,2)" remarks="Цена продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="${timestamp_type}" remarks="Время окончания действия"/>
+            <column name="revision_id" type="bigint" remarks="№ ревизии">
+                <constraints foreignKeyName="product_price_audit_fkey" references="revision_info_envers(id)"
+                             nullable="false"/>
+            </column>
+            <column name="revision_operation" type="smallint" remarks="Тип операции">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-product-user-audit" author="${author}" dbms="oracle, postgresql, hsqldb">
+        <preConditions onFail="MARK_RAN" onError="CONTINUE">
+            <not>
+                <tableExists tableName="product_user_audit"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="product_user_audit" remarks="История изменения перечня продуктов пользователя">
+            <column name="id" type="${uuid_type}" remarks="Идентификатор записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="bigint" remarks="Идентификатор продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="${uuid_type}" remarks="Идентификатор пользователя"/>
+            <column name="revision_id" type="bigint" remarks="№ ревизии">
+                <constraints foreignKeyName="product_user_audit_fkey" references="revision_info_envers(id)"
+                             nullable="false"/>
+            </column>
+            <column name="revision_operation" type="smallint" remarks="Тип операции">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add-grants-to-tables" author="${author}" dbms="oracle, postgresql, hsqldb">
+        <sql>GRANT SELECT, INSERT ON revision_info_envers TO ${db_user_name}</sql>
+        <sql>GRANT SELECT, INSERT ON revision_changes_envers TO ${db_user_name}</sql>
+        <sql>GRANT SELECT, INSERT, UPDATE, DELETE ON product_audit TO ${db_user_name}</sql>
+        <sql>GRANT SELECT, INSERT, UPDATE, DELETE ON product_name_audit TO ${db_user_name}</sql>
+        <sql>GRANT SELECT, INSERT, UPDATE, DELETE ON product_price_audit TO ${db_user_name}</sql>
+        <sql>GRANT SELECT, INSERT, UPDATE, DELETE ON product_user_audit TO ${db_user_name}</sql>
+    </changeSet>
+</databaseChangeLog>

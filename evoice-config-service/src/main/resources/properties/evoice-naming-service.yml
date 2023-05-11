@@ -1,0 +1,19 @@
+# IMPORT PROPERTIES
+spring.config.import:
+  # IMPORT EUREKA PROPERTIES
+  - parties/eureka.yml
+  # IMPORT MANAGEMENT PROPERTIES
+  - parties/management.yml
+
+# SPRING PROPERTIES
+spring:
+  # APPLICATION PROPERTIES
+  application.name: evoice-naming-service
+
+# EUREKA PROPERTIES
+eureka:
+  client:
+    register-with-eureka: false
+
+# THIS SERVICE OTHER PROPERTIES
+server.port: ${EVOICE_NAMING_SERVICE_PORT:8090}

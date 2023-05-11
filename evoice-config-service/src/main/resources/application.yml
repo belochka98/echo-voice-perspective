@@ -1,0 +1,20 @@
+# SPRING PROPERTIES
+spring:
+  # APPLICATION PROPERTIES
+  application.name: evoice-config-service
+  # SPRING CLOUD PROPERTIES
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/properties
+  # SPRING CONFIG SERVER PROFILES PROPERTIES
+  profiles:
+    active: native
+
+# LOGGING PROPERTIES
+logging.level:
+  root: debug
+
+# THIS SERVICE OTHER PROPERTIES
+server.port: ${EVOICE_CONFIG_SERVICE_PORT:8067}
