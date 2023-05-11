@@ -1,7 +1,7 @@
-# echo-voice-solution
+# echo-voice-perspective
 
 The solution of using users product data developed with spring-boot-cloud
-like API Gateway / Eureka Discovery Server / Keycloak / Zipkin / Prometheus / Grafana / Docker Compose
+like API Gateway / Eureka Discovery Server / Spring Cloud Config Server / RabbitMQ / Keycloak / Zipkin / Prometheus / Grafana / Docker Compose
 
 ### evoice-api-gateway
 
@@ -17,14 +17,15 @@ It also works with the RabbitMQ Load Balancer.
 
 The Spring User Service as a source service for data about system users,
 as well as an end point for maintaining information.
+To communicate with other services (meaning resource services), an REST / AMQP client is used.
+
+### evoice-product-service
+
+The Spring User Service as a source service for data about products,
+as well as an end point for maintaining information.
 To communicate with other services (meaning resource services), an AMQP client is used.
 
 ### platform
 
 The platform service is used as a source of aggregated classes
 and sets of dependencies for the operation of other services (Maven pom inheritance).
-
-### other application commons
-
-Stack of commons:
-...
