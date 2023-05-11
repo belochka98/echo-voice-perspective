@@ -29,3 +29,8 @@ To communicate with other services (meaning resource services), an AMQP client i
 
 The platform service is used as a source of aggregated classes
 and sets of dependencies for the operation of other services (Maven pom inheritance).
+
+![plot](https://github.com/belochka98/echo-voice-perspective/blob/main/sources/maven%20architecture.png)
+
+
+#### p.s. https://github.com/belochka98/echo-voice-perspective/blob/main/sources/postman_collection.json - here is postman collection ;)
