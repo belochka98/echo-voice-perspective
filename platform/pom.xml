@@ -48,7 +48,6 @@
         <!-- PARENT DEPENDENCIES -->
         <module>parent/evoice-spring-parent</module>
         <module>parent/evoice-service-parent</module>
-        <module>parent/evoice-api-parent</module>
     </modules>
 
     <build>
